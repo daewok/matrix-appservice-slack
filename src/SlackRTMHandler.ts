@@ -67,10 +67,6 @@ export class SlackRTMHandler extends SlackEventHandler {
         const chanInfo = (await slackClient.conversations.info({channel: e.channel})) as ConversationsInfoResponse;
         // is_private is unreliably set.
         chanInfo.channel.is_private = chanInfo.channel.is_private || chanInfo.channel.is_im || chanInfo.channel.is_group;
-        if (!chanInfo.channel.is_private) {
-            // Never forward messages on from the users workspace if it's public
-            return;
-        }
         // Sneaky hack to set the domain on messages.
         e.team_id = teamInfo.id;
         e.team_domain = teamInfo.domain;
